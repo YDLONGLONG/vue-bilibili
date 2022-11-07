@@ -197,30 +197,26 @@ export default {
         this.messageContent.push({ ...newValue, type: 2 });
       }
     },
+    //聊天定位到底部
     handleScrollBottom() {
       const ul = this.$refs.joinUs;
       ul.scrollTop = ul.scrollHeight;
     },
+    //跳转聊天室
     jump(id){
       this.$router.push('/message/mymsg/' + id);
-      location.reload();
+      //局部刷新页面
+      this.getChat(id)
     },
+    //发送消息给服务器
     async addChat(msg){
       let { _id } = this.$route.params
       await addChat({userid:this.userId,friendid:_id,msg:msg,type:1})
     },
-    async init(_id){
-      if (!this.userId) {
-        this.$message.warning('请先登录')
-        return await this.$router.push('/login')
-      }
-      let result = await getUserHeadUrl(_id)
-      this.user = result.data
-      let resu = await getUserHeadUrl(this.userId)
-      this.my = resu.data
-      this.url = this.$apiServer
-      let res = await getAttentionUser(this.userId)
-      this.userList = res.data;
+    //获取聊天记录
+    async getChat(_id){
+      //清空聊天记录
+      this.messageContent = []
       let re = await getChat({userid:this.userId,friendid:_id,page:1})
       for(let i=0;i<re.data.chat.length;i++){
         if (re.data.chat[i].userid === this.userId) {
@@ -235,7 +231,7 @@ export default {
       for(let i=0;i<r.data.chat.length;i++){
         if (r.data.chat[i].userid === this.userId) {
           //是自己发的信息
-          this.messageContent.push({ _id:re.data.chat[i]._id,msg:r.data.chat[i].msg, type: 1 ,time:r.data.chat[i].time});
+          this.messageContent.push({ _id:r.data.chat[i]._id,msg:r.data.chat[i].msg, type: 1 ,time:r.data.chat[i].time});
         } else {
           //是别人发的信息
           this.messageContent.push({ _id:r.data.chat[i]._id,msg:r.data.chat[i].msg, type: 2 ,time:r.data.chat[i].time});
@@ -256,6 +252,21 @@ export default {
               return 0;
           }
       });
+    },
+    async init(_id){
+      if (!this.userId) {
+        this.$message.warning('请先登录')
+        return await this.$router.push('/login')
+      }
+      //获取用户信息
+      let result = await getUserHeadUrl(_id)
+      this.user = result.data
+      let resu = await getUserHeadUrl(this.userId)
+      this.my = resu.data
+      this.url = this.$apiServer
+      let res = await getAttentionUser(this.userId)
+      this.userList = res.data;
+      this.getChat(_id);
     }
   },
 };
