@@ -360,7 +360,7 @@ export default {
       this.video = result.data.video
       this.videos = result.data.otherVideos
       this.danmuCount = result.data.danmuCount
-      this.options.video.url = 'http://localhost:3000' + this.video.videoUrl
+      this.options.video.url = this.$apiServer + this.video.videoUrl
       this.options.video.type = this.video.videoUrl.split('.').pop()
       await setPlayCount(_id)
       result = await getCommentPage(_id)

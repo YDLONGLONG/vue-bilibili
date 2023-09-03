@@ -18,6 +18,8 @@ import Contextmenu from "vue-contextmenujs"
 Vue.use(Contextmenu);
 let BASE_URL = 'http://localhost:3000'
 Vue.prototype.$apiServer = BASE_URL
+let PLAY_URL = 'http://localhost:8000'
+Vue.prototype.$playServer = PLAY_URL
 Vue.config.productionTip = false
 Vue.prototype.$bus = new Vue
 Vue.use(ElementUI)

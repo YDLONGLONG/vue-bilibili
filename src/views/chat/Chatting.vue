@@ -108,7 +108,7 @@ export default {
         this.avatar = default_avatar;
       }else{
         let result = await getUserById(this.userId);
-        this.avatar = "http://localhost:3000" + result.data.headUrl;
+        this.avatar = this.$apiServer + result.data.headUrl;
         this.username = result.data.nick;
       }
     }

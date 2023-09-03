@@ -193,7 +193,7 @@ export default {
     async init() {
       let { _id } = this.$route.params
       this.live = (await getLiveById(_id)).data
-      this.options.video.url = 'http://localhost:8000' + this.live.playUrl
+      this.options.video.url = this.$playServer + this.live.playUrl
       let wsUrl = 'ws://localhost:8080?room=' + this.live.user._id
       this.initWebSocket(wsUrl)
       if (this.userId) {

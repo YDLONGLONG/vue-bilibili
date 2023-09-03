@@ -29,6 +29,13 @@ export default {
         img.style.setProperty('--blur',blurValue+'px')
         })
     })
+    //鼠标移出container恢复原状
+    container.addEventListener('mouseleave',function(){
+        imgs.forEach((img,index)=>{
+            img.style.setProperty('--offset',0+'px')
+            img.style.setProperty('--blur',0+'px')
+        })
+    })
   }
 }
 </script>

@@ -1,9 +1,10 @@
 module.exports = {
   //构建生产环境的项目入口 生产环境时为/my-project ,否则为/
-  publicPath: process.env.NODE_ENV === 'production' ? '/vue-bilibili/' : '/',
+  // publicPath: process.env.NODE_ENV === 'production' ? '/vue-bilibili/' : '/',
+  publicPath: './',
   lintOnSave: false,
   devServer: {
-    port: 80,
+    port: 8880,
     disableHostCheck: true,
     proxy: {
       '/api': {//这里最好有一个 /

@@ -228,9 +228,6 @@ export default {
   mounted(){
     this.$bus.$on('globalEvent',async (val)=>{
         let result = await getVideoPage(val, this.type)
-        // result.data.videos.forEach(item=>{
-        //   this.videos.push(item)
-        // })
         //数组拼接
         this.videos = [...this.videos,...result.data.videos]
       })
