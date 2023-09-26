@@ -9,7 +9,9 @@
     <el-main>
       <!-- 路由占位符 主要部分 -->
       <!--  匹配完整路径 使其能跳转自身   -->
-      <router-view></router-view>
+      <keep-alive>
+        <router-view></router-view>
+      </keep-alive>
     </el-main>
     <el-footer>
       <Footer v-show="$route.meta.show"></Footer>
