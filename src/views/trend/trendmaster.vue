@@ -15,13 +15,13 @@
                   <el-row type="flex" align="middle">
                       <el-col :offset="4"><router-link :to="`/mine/attention`"><div style="position:relative;left:13%">{{attentions.length}}</div>关注</router-link></el-col>
                       <el-col><div style="position:relative;left:13%">{{user.fansCount}}</div >粉丝</el-col>
-                      <el-col><router-link :to="`/mine/trend`"><div style="position:relative;left:13%">{{trendList.length}}+</div>动态</router-link></el-col>
+                      <el-col><router-link :to="`/mine/trend`"><div style="position:relative;left:13%">&nbsp;</div>动态</router-link></el-col>
                   </el-row>
               </div>
           </div>
           <div class="middle">
               <div class="fbdt">
-                  <quill-editor ref="myQuillEditor" v-model="content" class="myQuillEditor" :options="editorOption"/>
+                  <quill-editor ref="myQuillEditor" class="myQuillEditor" :options="editorOption" @change="onEditorChange($event)"/>
                   <!-- <el-input class="srk" v-model="content" placeholder="有什么和大家分享的"></el-input> -->
                   <el-button type="primary" style="position:relative;left:90%;top:10px;" @click="send">发布</el-button>
               </div>
@@ -73,7 +73,7 @@
                     </el-row>
                     <el-row>
                     <router-link :to="`/trendinfo/${trend._id}`">
-                        <p class="tc" v-html="trend.content">{{trend.content}}</p>
+                        <p class="tc" v-html="trend.content"></p>
                     </router-link>
                     </el-row>
                     <el-row>
@@ -129,10 +129,15 @@ import { getTrendPage, sendTrend } from '../../api/trend'
 import { addBan } from '../../api/ban'
 import {quillEditor, Quill} from 'vue-quill-editor'
 import {container, ImageExtend, QuillWatch} from 'quill-image-extend-module'
-Quill.register('modules/ImageExtend', ImageExtend)
+// import { ImageResize } from 'quill-image-resize-module';
+import { ImageDrop } from 'quill-image-drop-module';
+Quill.register('modules/ImageExtend', ImageExtend);
+// Quill.register('modules/imageResize', ImageResize);
+Quill.register('modules/imageDrop', ImageDrop);
 import 'quill/dist/quill.core.css'
 import 'quill/dist/quill.snow.css'
 import 'quill/dist/quill.bubble.css'
+import mixin from '@/utils/mixin'
 export default {
   data() {
     return {
@@ -140,14 +145,19 @@ export default {
       attentions: [],
       trendList:[],
       attrendList:[],
+      trendListLength:0,
       content:'',
       editorOption: {  
           modules: {
+            // ImageResize: {
+            //   modules: [ 'Resize', 'DisplaySize', 'Toolbar' ],
+            // },
+            imageDrop: true,
             ImageExtend: {
               loading: true,
               name: 'img',
               size:2,
-              action: 'http://localhost:3000/upload/avatar',
+              action: this.$apiServer+'/upload/avatar',
               response: (res) => {
                 return this.$apiServer+res.data
               }
@@ -169,13 +179,30 @@ export default {
       }
     }
   },
+  mixins: [mixin],
   components: {
     quillEditor,
   },
   computed: {
     ...mapState(['userId'])
   },
+  updated(){
+    let DomList=document.getElementsByClassName('tc')
+    for(let i of DomList){
+      let DomListImg = i.querySelectorAll('img')
+      for(let i in DomListImg){
+        if( DomListImg[i].style){
+          DomListImg[i].style.width='100px';
+          DomListImg[i].style.height='100px';
+          DomListImg[i].style.float='left';
+        }
+      }
+    }
+  },
   methods: {
+    onEditorChange({ quill, html, text }) {
+      this.content = html
+    },
     async submitBan(id){
       await addBan({ trendid:id ,radio:this.form.radio, textarea: this.form.textarea, submitid:this.userId })
       this.$message.success("举报成功")
@@ -213,13 +240,21 @@ export default {
       this.trendList = result3.data.trend
 
       this.attentions.forEach(async (item) =>{
-      let result4 = await getTrendPage(item._id)
-      this.attrendList = result4.data.trend
-    })
+        let result4 = await getTrendPage(item._id)
+        this.attrendList.push(...result4.data.trend)
+      })
     }
   },
   created() {
     this.init()
+  },
+  mounted(){
+    this.$bus.$on('globalEvent',async (val)=>{
+        this.attentions.forEach(async (item) =>{
+          let result5 = await getTrendPage(item._id,val)
+          this.attrendList.push(...result5.data.trend)
+        })
+      })
   }
 }
 </script>
@@ -278,8 +313,13 @@ export default {
     cursor:pointer
   }
   .tc{
-    height:12rem;
+    max-height:12rem;
     overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 6;
+    -webkit-box-orient: vertical;
+    white-space: normal;
   }
   .el-row {
     padding: 2rem;

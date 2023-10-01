@@ -33,7 +33,7 @@
       </el-col>
     </el-row>
     <el-row>
-        <p v-html="trendInfo.content" class="vhtml">{{trendInfo.content}}</p>
+        <p v-html="trendInfo.content" class="vhtml"></p>
     </el-row>
     <el-row type="flex">
         <el-col :span="3"><a @click="support" style="cursor:pointer" :class="trendInfo.zanList.indexOf(userId) !== -1 ? 'color-true' : 'color-false'"><i class="el-icon-thumb">赞 {{ trendInfo.zanList.length }}</i></a></el-col>
@@ -159,6 +159,14 @@ export default {
       commentCount: 0,
     }
   },
+  updated(){
+    let DomList=document.getElementsByClassName('vhtml')[0].querySelectorAll('img')
+    for(let i in  DomList){
+      if( DomList[i].style){
+         DomList[i].style.width='100%'
+      }
+    }
+  },
   methods: {
     //删除动态
     async deleteTrend(id){
@@ -243,30 +251,6 @@ export default {
       this.commentCount = result.data.commentCount
       this.replyContent = ''
     },
-    showImg(){
-      var content = document.getElementsByClassName('vhtml')[0].getElementsByTagName('img');
-      if(content.length!=0){
-      var oldwidth,oldheight;
-      var maxwidth=600;
-      var maxheight=300;
-      if(content[0].width > content[0].height)
-        {
-            if(content[0].width > maxwidth)
-            {
-                oldwidth = content[0].width;
-                content[0].height = content[0].height * (maxwidth/oldwidth);
-                content[0].width = maxwidth;
-            }
-        }else{
-            if(content[0].height > maxheight)
-            {
-                oldheight = content[0].height;
-                content[0].width = content[0].width * (maxheight/oldheight);
-                content[0].height = maxheight;
-            }
-        }
-      }
-    },
     async init(_id) {
       let result1 = await getTrendInfo(_id)
       this.trendInfo = result1.data[0]
@@ -282,8 +266,6 @@ export default {
       this.commentCount = result4.data.commentCount
       this.isReply = new Array(this.commentList.length).fill(false)
       this.showAllReply = new Array(this.commentList.length).fill(false)
-
-      this.showImg();
     }
   },
     created() {

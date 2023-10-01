@@ -215,6 +215,8 @@ export default {
     },
     //获取聊天记录
     async getChat(_id){
+      let result = await getUserHeadUrl(_id);
+      this.user = result.data;
       //清空聊天记录
       this.messageContent = []
       let re = await getChat({userid:this.userId,friendid:_id,page:1})

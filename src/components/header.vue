@@ -45,10 +45,10 @@
             </span>
             <el-dropdown-menu slot="dropdown">
               <el-dropdown-item>
-                  <a href="http://www.wego666.top/">官方论坛</a>
+                  <a href="http://www.wego666.top/" target="_blank">官方论坛</a>
               </el-dropdown-item>
               <el-dropdown-item>
-                  <a href="https://ydlonglong.github.io">我的博客</a>
+                  <a href="https://ydlonglong.github.io" target="_blank">我的博客</a>
               </el-dropdown-item>
               <el-dropdown-item>
                   <span @click="logout">退出</span>

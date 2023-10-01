@@ -8,7 +8,7 @@
     </el-row>
     <el-row>
     <router-link :to="`/trendinfo/${trend._id}`">
-        <p class="tc" v-html="trend.content">{{trend.content}}</p>
+        <p class="tc" v-html="trend.content"></p>
     </router-link>
     </el-row>
     <el-row>
@@ -27,6 +27,19 @@ export default {
     return {
       keyWord: '',
       trendList:[]
+    }
+  },
+  updated(){
+    let DomList=document.getElementsByClassName('tc')
+    for(let i of DomList){
+      let DomListImg = i.querySelectorAll('img')
+      for(let i in DomListImg){
+        if( DomListImg[i].style){
+          DomListImg[i].style.width='100px';
+          DomListImg[i].style.height='100px';
+          DomListImg[i].style.float='left';
+        }
+      }
     }
   },
   methods: {
@@ -49,8 +62,13 @@ export default {
   border-radius: 0.5rem;
   border: 1px solid #d7dae2;
   .tc{
-    height:6rem;
+    max-height:12rem;
     overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 6;
+    -webkit-box-orient: vertical;
+    white-space: normal;
   }
   .el-row {
     padding: 2rem;

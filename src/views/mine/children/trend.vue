@@ -23,7 +23,7 @@
     </el-row>
     <el-row>
       <router-link :to="`/trendinfo/${trend._id}`">
-        <p class="tc" v-html="trend.content">{{trend.content}}</p>
+        <p class="tc" v-html="trend.content"></p>
       </router-link> 
     </el-row>
     <el-row>
@@ -54,6 +54,19 @@ export default {
       more: true,
     }
   },
+  updated(){
+    let DomList=document.getElementsByClassName('tc')
+    for(let i of DomList){
+      let DomListImg = i.querySelectorAll('img')
+      for(let i in DomListImg){
+        if( DomListImg[i].style){
+          DomListImg[i].style.width='100px';
+          DomListImg[i].style.height='100px';
+          DomListImg[i].style.float='left';
+        }
+      }
+    }
+  },
   methods: {
     async deleteTrend(id){
       if(confirm("确认删除吗")){
@@ -75,8 +88,8 @@ export default {
   mounted(){
     this.$bus.$on('globalEvent',async (val)=>{
         let result = await getTrendPage(this.userId,val)
-        result.data.trend.forEach(item=>{
-        this.trendList.push(item)
+          result.data.trend.forEach(item=>{
+          this.trendList.push(item)
         })
       })
   }
@@ -108,8 +121,13 @@ export default {
     }
   }
   .tc{
-    height:6rem;
+    max-height:12rem;
     overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 6;
+    -webkit-box-orient: vertical;
+    white-space: normal;
     &:hover{
       color: black;
     }

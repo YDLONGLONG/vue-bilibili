@@ -171,8 +171,8 @@
       <el-col :span="6" :offset="1">
         <el-collapse>
           <el-collapse-item title="弹幕列表">
-            <div style="display:flex;justify-content:space-between;font-size:16px;margin-bottom:10px;"><span>时间</span><span>内容</span></div>
-            <div style="display:flex;justify-content:space-between;" v-for="(danmu,index) in danmuList" :key="index"><span>{{danmu[0]}}</span><span>{{danmu[4]}}</span></div>
+            <div style="display:flex;justify-content:space-between;font-size:16px;margin:0 10px 10px 0;"><span>时间</span><span>内容</span></div>
+            <div style="display:flex;justify-content:space-between;margin-right: 10px;" v-for="(danmu,index) in danmuList" :key="index"><span>{{danmu[0].toFixed(2)}}</span><span>{{danmu[4]}}</span></div>
           </el-collapse-item>
         </el-collapse>
       </el-col>
@@ -493,4 +493,20 @@ export default {
     }
   }
 }
+.el-collapse-item {
+  max-height: 360px;
+	overflow-y: auto;
+}
+.el-collapse-item::-webkit-scrollbar {
+    width: 4px;
+}
+.el-collapse-item::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    background: rgba(0,0,0,0.2);
+}
+.el-collapse-item::-webkit-scrollbar-track {
+    border-radius: 0;
+    background: rgba(0,0,0,0.1);
+}
+
 </style>

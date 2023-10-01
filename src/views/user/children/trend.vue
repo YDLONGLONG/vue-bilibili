@@ -22,7 +22,7 @@
     </el-row>
     <el-row>
       <router-link target="_blank" :to="`/trendinfo/${trend._id}`">
-        <p class="tc" v-html="trend.content">{{trend.content}}</p>
+        <p class="tc" v-html="trend.content"></p>
       </router-link> 
     </el-row>
     <el-row>
@@ -50,6 +50,19 @@ export default {
       trendList:[],
     }
   },
+  updated(){
+    let DomList=document.getElementsByClassName('tc')
+    for(let i of DomList){
+      let DomListImg = i.querySelectorAll('img')
+      for(let i in DomListImg){
+        if( DomListImg[i].style){
+          DomListImg[i].style.width='100px';
+          DomListImg[i].style.height='100px';
+          DomListImg[i].style.float='left';
+        }
+      }
+    }
+  },
   methods: {
     async init(page = 1) {
       this.id = this.$route.params.id
@@ -59,6 +72,14 @@ export default {
   },
   created() {
     this.init()
+  },
+  mounted(){
+    this.$bus.$on('globalEvent',async (val)=>{
+        let result = await getTrendPage(this.id,val)
+          result.data.trend.forEach(item=>{
+          this.trendList.push(item)
+        })
+      })
   }
 }
 </script>

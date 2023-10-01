@@ -11,7 +11,7 @@
           <span slot="title">上传</span>
         </el-menu-item>
         </router-link>
-        <el-submenu>
+        <el-submenu index="">
           <template slot="title">
             <i class="el-icon-document"></i>
             <span>内容管理</span>
@@ -32,7 +32,7 @@
 
 <script>
 export default {
-
+  
 }
 </script>
 

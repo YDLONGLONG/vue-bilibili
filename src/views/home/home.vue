@@ -264,7 +264,6 @@ export default {
   mounted() {
     this.$bus.$on("globalEvent", async (val) => {
       let result = await getVideoPage(val, this.type);
-      //数组拼接
       this.videos = [...this.videos, ...result.data.videos];
     });
   },
