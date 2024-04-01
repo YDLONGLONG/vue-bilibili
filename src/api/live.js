@@ -12,3 +12,7 @@ export const updateLive = data => ajax('/live/update', data, 'post')
 export const getOnLive = (page = 1) => ajax('/live/onLive', { page })
 //根据ID查询
 export const getLiveById = _id => ajax('/live/_id', { _id })
+//支付
+export const pay = data => ajax('/qrCode/payment', data, 'post')
+//查询支付状态
+export const getPayStatus = data => ajax('/qrCode/queryOrder', data, 'post')

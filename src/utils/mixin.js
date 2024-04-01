@@ -1,3 +1,4 @@
+import { mapState } from "vuex";
 export default {
     data() {
         return {
@@ -6,6 +7,9 @@ export default {
     },
     created: function () {
         this.isLogin()
+    },
+    computed: {
+        ...mapState(["userId"])
     },
     methods: {
         isLogin: async () => {

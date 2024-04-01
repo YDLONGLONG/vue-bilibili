@@ -1,30 +1,31 @@
 <template>
   <div style="overflow: hidden">
+    <!-- <vue-qr :text="this.qrcode" :size="200"></vue-qr>{{ noticeTxt }} -->
     <!-- 导航栏 -->
     <div class="type">
       <el-row type="flex" align="middle" class="left">
         <el-col :offset="3"
           ><router-link :to="`/home`"
             ><div><img src="../../assets/img/shouye.png" /></div>
-            &nbsp; 首页</router-link
+            首页</router-link
           ></el-col
         >
         <el-col
           ><router-link :to="`/trendmaster`"
             ><div><img src="../../assets/img/dongtai.png" /></div>
-            &nbsp; 动态</router-link
+            动态</router-link
           ></el-col
         >
         <el-col
           ><router-link :to="`/top`"
             ><div><img src="../../assets/img/remen.png" /></div>
-            &nbsp; 热门</router-link
+            热门</router-link
           ></el-col
         >
         <el-col
           ><router-link :to="`/`"
-            ><div><img src="../../assets/img/pindao.png" /></div>
-            &nbsp; 频道</router-link
+            ><div @click="pay()"><img src="../../assets/img/pindao.png" /></div>
+            频道</router-link
           ></el-col
         >
       </el-row>
@@ -92,7 +93,6 @@
           </router-link>
         </el-col>
       </div>
-      <!-- <div class="changebutton"><el-button size="mini"><div></div>换<div></div>一<div></div>换</el-button></div> -->
     </div>
     <!-- 右侧分类 -->
     <div>
@@ -168,14 +168,14 @@
   </div>
 </template>
 <script>
-// @ is an alias to /src
 import VideoList from "@/components/videoList";
 import LiveList from "@/components/liveList";
 import { getVideoPage, recommend, getRandomVideoPage } from "../../api/video";
-import { getOnLive } from "../../api/live";
+import { getOnLive, pay, getPayStatus } from "../../api/live";
+import vueQr from "vue-qr";
 export default {
   name: "Home",
-  components: { VideoList, LiveList },
+  components: { VideoList, LiveList, vueQr },
   data() {
     return {
       livePage: 1,
@@ -215,10 +215,36 @@ export default {
       page: 1,
       count: 0,
       index: 7,
+      qrcode: "",
+      noticeTxt: "请扫码完成支付",
     };
   },
   computed: {},
   methods: {
+    // 创建支付订单
+    async pay() {
+      let data = {
+        price: 0.01,
+        name: "商品",
+      };
+      let result = await pay(data);
+      this.qrcode = result.alipay_trade_precreate_response.qr_code;
+      this.checkPayStatus(result.alipay_trade_precreate_response.out_trade_no);
+      console.log(result);
+    },
+    // 轮询支付状态
+    checkPayStatus(orderId) {
+      let payTimer = setTimeout(() => {
+        clearTimeout(payTimer);
+        getPayStatus({ orderId }).then((queryRes) => {
+          if (queryRes.code === "40004") {
+            this.noticeTxt = "交易不存在";
+          }
+          console.log(queryRes);
+        });
+      }, 1500);
+    },
+    // 获取直播列表
     async handLivePage(page) {
       this.livePage = page;
       let result = await getOnLive(page);
@@ -228,6 +254,7 @@ export default {
     goto(_id) {
       this.$router.push("/detail/" + _id);
     },
+    // 新增视频列表
     async getPageByType(type) {
       if (type === 7) {
         this.type = "";
@@ -239,6 +266,7 @@ export default {
       this.count = result.data.count;
       this.index = type;
     },
+    // 获取视频列表
     async handleCurrent(page) {
       this.livePage = page;
       let result = await getVideoPage(page, this.type);
