@@ -1,6 +1,17 @@
 <template>
 <div class="show" ref="tree">
   <el-container>
+    <div>
+      <el-button @click="drawer = true" circle style="position: fixed; z-index: 10;margin: 5px;">AI</el-button>
+      <el-drawer
+        :visible.sync="drawer"
+        :with-header="false"
+        :modal="false">
+        <div>
+        <iframe src="https://hailuoai.com/" width="100%" height="900px" frameborder="0"></iframe>
+      </div>
+      </el-drawer>
+      </div>
     <!-- 头 -->
     <el-header height="10%" style="padding:0;">
       <Header />
@@ -32,7 +43,8 @@ export default {
   },
   data(){
     return{
-      page:1
+      page:1,
+      drawer: false,
     }
   },
   mounted() {

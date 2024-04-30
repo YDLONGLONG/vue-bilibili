@@ -7,25 +7,25 @@
         <el-col :offset="3"
           ><router-link :to="`/home`"
             ><div><img src="../../assets/img/shouye.png" /></div>
-            首页</router-link
+            <span style="margin-left: 5px;">首页</span></router-link
           ></el-col
         >
         <el-col
           ><router-link :to="`/trendmaster`"
             ><div><img src="../../assets/img/dongtai.png" /></div>
-            动态</router-link
+            <span style="margin-left: 5px;">动态</span></router-link
           ></el-col
         >
         <el-col
           ><router-link :to="`/top`"
             ><div><img src="../../assets/img/remen.png" /></div>
-            热门</router-link
+            <span style="margin-left: 5px;">热门</span></router-link
           ></el-col
         >
         <el-col
           ><router-link :to="`/`"
             ><div @click="pay()"><img src="../../assets/img/pindao.png" /></div>
-            频道</router-link
+            <span style="margin-left: 7px;">频道</span></router-link
           ></el-col
         >
       </el-row>
