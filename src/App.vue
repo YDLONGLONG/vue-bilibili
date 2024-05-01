@@ -1,7 +1,8 @@
 <template>
 <div class="show" ref="tree">
   <el-container>
-    <div>
+    <VueDragResize :isActive="true"  :isResizable="false" :w="1" :h="1">
+      <div v-drag>
       <el-button @click="drawer = true" circle style="position: fixed; z-index: 10;margin: 5px;">AI</el-button>
       <el-drawer
         :visible.sync="drawer"
@@ -11,7 +12,8 @@
         <iframe src="https://hailuoai.com/" width="100%" height="900px" frameborder="0"></iframe>
       </div>
       </el-drawer>
-      </div>
+    </div>
+    </VueDragResize>
     <!-- 头 -->
     <el-header height="10%" style="padding:0;">
       <Header />
@@ -35,11 +37,13 @@
 import Header from './components/header'
 import Footer from './components/footer'
 import Banner from "./components/banner.vue"
+import VueDragResize from 'vue-drag-resize'
 export default {
   components: {
     Header,
     Footer,
-    Banner
+    Banner,
+    VueDragResize
   },
   data(){
     return{

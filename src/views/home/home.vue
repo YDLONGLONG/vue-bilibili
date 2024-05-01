@@ -25,7 +25,7 @@
         <el-col
           ><router-link :to="`/`"
             ><div @click="pay()"><img src="../../assets/img/pindao.png" /></div>
-            <span style="margin-left: 7px;">频道</span></router-link
+            <span style="margin-left: 10px;">频道</span></router-link
           ></el-col
         >
       </el-row>
