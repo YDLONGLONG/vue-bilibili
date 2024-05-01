@@ -22,7 +22,9 @@
     <div class="right">
       <div class="rightBg"></div>
       <div>
-        <router-view></router-view>
+        <keep-alive include="Room">
+            <router-view></router-view>
+        </keep-alive>
       </div>
     </div>
   </div>

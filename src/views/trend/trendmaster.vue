@@ -15,7 +15,7 @@
                   <el-row type="flex" align="middle">
                       <el-col :offset="4"><router-link :to="`/mine/attention`"><div style="position:relative;left:13%">{{attentions.length}}</div>关注</router-link></el-col>
                       <el-col><div style="position:relative;left:13%">{{user.fansCount}}</div >粉丝</el-col>
-                      <el-col><router-link :to="`/mine/trend`"><div style="position:relative;left:13%">&nbsp;</div>动态</router-link></el-col>
+                      <el-col><router-link :to="`/mine/trend`"><div style="position:relative;left:13%">+</div>动态</router-link></el-col>
                   </el-row>
               </div>
           </div>

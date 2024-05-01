@@ -103,7 +103,7 @@ export default {
     },
     async init() {
       let result = await getEmail(this.userId)
-      this.email = result.data.email
+      if(result)this.email = result.data.email
     }
   },
   created() {

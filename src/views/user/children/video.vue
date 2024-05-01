@@ -32,11 +32,13 @@
       <div class="grjj">
         <h1>个人资料</h1>
         <hr>
-        <p><i class="el-icon-user-solid"></i>年龄：{{userinfo.age}}</p>
-        <p><i class="el-icon-phone"></i>电话：{{userinfo.phone}}</p>
-        <p><i class="el-icon-burger"></i>生日：{{userinfo.birth|dateFormat}}</p>
-        <p><i class="el-icon-office-building"></i>地址：{{userinfo.address}}</p>
-        <p><i class="el-icon-tickets"></i>个人简介：{{userinfo.introduction}}</p>
+        <div>
+          <p><i class="el-icon-user-solid"></i>年龄：{{userinfo.age ? userinfo.age : '暂未设置'}}</p>
+          <p><i class="el-icon-phone"></i>电话：{{userinfo.phone ? userinfo.phone : '暂未设置'}}</p>
+          <p v-if="userinfo.birth"><i class="el-icon-burger"></i>生日：{{userinfo.birth|dateFormat}}</p><p v-else>生日：暂未设置</p>
+          <p><i class="el-icon-office-building"></i>地址：{{userinfo.address ? userinfo.address : '暂未设置'}}</p>
+          <p><i class="el-icon-tickets"></i>个人简介：{{userinfo.introduction ? userinfo.introduction : '暂未设置'}}</p>
+        </div>
       </div>
     </div>
     </div>

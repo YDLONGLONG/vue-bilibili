@@ -33,7 +33,7 @@ export default {
         return await this.$router.push('/login')
       }
       let result = await getUserInfo(this.userId)
-      this.videos = result.data[0].history
+      if(result)this.videos = result.data[0].history
     }
   },
   created() {

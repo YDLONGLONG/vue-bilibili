@@ -10,3 +10,5 @@ export const getunread = userid => ajax('/chat/getunread', {userid})
 export const setunread = data => ajax('/chat/setunread', data , 'post')
 //删除指定消息
 export const deleteOneChat = _id => ajax('/chat/deleteOneChat', _id , 'post')
+//获取未读消息人数列表
+export const getunreadList = userid => ajax('/chat/getunreadlist', {userid})

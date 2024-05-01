@@ -2,7 +2,7 @@
 <div class="show" ref="tree">
   <el-container>
     <VueDragResize :isActive="true"  :isResizable="false" :w="1" :h="1">
-      <div v-drag>
+      <div>
       <el-button @click="drawer = true" circle style="position: fixed; z-index: 10;margin: 5px;">AI</el-button>
       <el-drawer
         :visible.sync="drawer"

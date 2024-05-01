@@ -6,15 +6,24 @@
       </div>
       <div class="userChat">
         <ul class="onlineList">
-          <li class="userBox" v-for="item in userList" :key="item.username" @click="jump(item._id)">
-              <img :src="item.headUrl | urlFormat" alt="" />
-              <span>{{ item.nick }}</span>
+          <li class="userBox" v-for="item in userList" :key="item._id" @click="jump(item._id)">
+              <img :src="item.headUrl | urlFormat" alt="" v-if="item.headUrl"/>
+              <span v-if="item.nick">{{ item.nick }}</span>
+          </li>
+        </ul>
+        <div class="listTop">
+          <span>陌生人消息</span>
+        </div>
+        <ul class="onlineList">
+          <li class="userBox" v-for="(item,index) in unreadList" :key="item._id" @click="jump(item.userid)">
+              <img src="@/assets/img/icontx.png"/>
+            <span>陌生人{{ index+1 }}</span>
           </li>
         </ul>
       </div>
     </div>
     <div class="roomRight">
-      <p class="name">{{ user.nick }}</p>
+      <p class="name" v-if="user">{{ user.nick }}</p>
       <div class="chatContent">
         <ul class="join" ref="joinUs">
           <li
@@ -30,7 +39,9 @@
               <img :src="url+my.headUrl" class="avatar" />
             </div>
             <div v-if="item1.type === 2">
-              <img :src="url+user.headUrl" alt class="avatar" />
+              <router-link :to="`/user/video/`+user._id">
+                <img :src="url+user.headUrl" alt class="avatar" />
+              </router-link>
               <p class="content" @contextmenu.prevent="onContextmenu">{{ item1.msg }}</p>
             </div>
           </li>
@@ -74,7 +85,7 @@ import { mapState } from "vuex";
 import io from "socket.io-client";
 import emoji from "../../../assets/emoji.json";
 import { getUserHeadUrl,getAttentionUser } from '../../../api/user'
-import { getChat,addChat,deleteOneChat } from '../../../api/chat'
+import { getChat,addChat,deleteOneChat,getunreadList } from '../../../api/chat'
 export default {
   name: "Room",
   data() {
@@ -87,6 +98,7 @@ export default {
       imgAllUrl: [],
       user: {},
       userList: [],
+      unreadList: [],
       message: {},
       my:{},
       url:''
@@ -101,8 +113,8 @@ export default {
     },
   },
   created(){
-    let { _id } = this.$route.params
-    this.init(_id)
+    let { _id } = this.$route.params;
+    this.init(_id);
   },
   mounted() {
     this.emojiList = emoji;
@@ -268,6 +280,8 @@ export default {
       this.url = this.$apiServer
       let res = await getAttentionUser(this.userId)
       this.userList = res.data;
+      let re = await getunreadList(this.userId)
+      this.unreadList = re.data;
       this.getChat(_id);
     }
   },
